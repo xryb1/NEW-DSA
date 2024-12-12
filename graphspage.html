@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Algorithms - DFS and BFS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .graph-demo {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+        }
+
+        .controls button {
+            margin-right: 10px;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .controls button:hover {
+            background-color: #2980b9;
+        }
+
+        .graph-container {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .traversal-output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        #traversal-result {
+            font-family: monospace;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Graph Algorithms - DFS and BFS</h1>
+        
+        <a href="index.html" class="back-button">Back to Main Page</a>
+
+        <div class="graph-demo">
+            <h2>Graph Traversal Demonstration</h2>
+            <p>This is a simple demonstration of DFS (Depth-First Search) and BFS (Breadth-First Search) algorithms on a predefined graph.</p>
+            
+            <div class="controls">
+                <button id="run-dfs">Run DFS</button>
+                <button id="run-bfs">Run BFS</button>
+                <button id="reset-graph">Reset</button>
+            </div>
+
+            <div class="graph-container">
+                <h3>Graph Structure:</h3>
+                <pre id="graph-visualization">
+    1 --- 2 --- 5
+    |     |     |
+    3 --- 4     6
+          |
+          7
+                </pre>
+            </div>
+
+            <div class="traversal-output">
+                <p>Traversal Order: <span id="traversal-result"></span></p>
+            </div>
+
+            <div class="explanation">
+                <h3>How it works:</h3>
+                <ul>
+                    <li><strong>DFS (Depth-First Search):</strong> Explores as far as possible along each branch before backtracking.</li>
+                    <li><strong>BFS (Breadth-First Search):</strong> Explores all neighbor nodes at the present depth before moving to nodes at the next depth level.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Graph representation (adjacency list)
+        const graph = {
+            1: [2, 3],
+            2: [1, 4, 5],
+            3: [1, 4],
+            4: [2, 3, 7],
+            5: [2, 6],
+            6: [5],
+            7: [4]
+        };
+
+        // DFS implementation
+        function dfs(graph, start, visited = new Set()) {
+            const result = [];
+            
+            function dfsHelper(vertex) {
+                visited.add(vertex);
+                result.push(vertex);
+                
+                for (let neighbor of graph[vertex]) {
+                    if (!visited.has(neighbor)) {
+                        dfsHelper(neighbor);
+                    }
+                }
+            }
+            
+            dfsHelper(start);
+            return result;
+        }
+
+        // BFS implementation
+        function bfs(graph, start) {
+            const visited = new Set([start]);
+            const queue = [start];
+            const result = [];
+            
+            while (queue.length > 0) {
+                const vertex = queue.shift();
+                result.push(vertex);
+                
+                for (let neighbor of graph[vertex]) {
+                    if (!visited.has(neighbor)) {
+                        visited.add(neighbor);
+                        queue.push(neighbor);
+                    }
+                }
+            }
+            
+            return result;
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const dfsButton = document.getElementById('run-dfs');
+            const bfsButton = document.getElementById('run-bfs');
+            const resetButton = document.getElementById('reset-graph');
+            const resultSpan = document.getElementById('traversal-result');
+
+            dfsButton.addEventListener('click', () => {
+                const traversalOrder = dfs(graph, 1);
+                resultSpan.textContent = traversalOrder.join(' → ');
+            });
+
+            bfsButton.addEventListener('click', () => {
+                const traversalOrder = bfs(graph, 1);
+                resultSpan.textContent = traversalOrder.join(' → ');
+            });
+
+            resetButton.addEventListener('click', () => {
+                resultSpan.textContent = '';
+            });
+        });
+    </script>
+</body>
+</html>

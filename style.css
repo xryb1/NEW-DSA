@@ -1,0 +1,365 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --background-color: #ecf0f1;
+    --text-color: #333;
+    --card-background: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    font-weight: 600;
+    letter-spacing: -1px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 15px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--secondary-color);
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+section {
+    background-color: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+    padding: 30px;
+}
+
+section h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.algorithm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.algorithm-card {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.algorithm-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.algorithm-card h4 {
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.complexity {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #666;
+    font-weight: 500;
+}
+
+#array-visualizer {
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+#array-canvas {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+#algorithm-select, 
+#sort-button {
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+#sort-button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#sort-button:hover {
+    background-color: #2980b9;
+}
+
+#reset-button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+}
+
+#reset-button:hover {
+    background-color: #2980b9;
+}
+
+.speed-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.speed-control label {
+    font-size: 0.9em;
+    color: #555;
+}
+
+#speed-slider {
+    width: 150px;
+}
+
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .algorithm-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.code-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+    background-color: #f4f4f4;
+    padding: 15px;
+    border-radius: 8px;
+    max-height: 500px;
+    overflow: auto;
+    width: 100%;
+}
+
+.code-section h5 {
+    color: #2c3e50;
+    border-bottom: 1px solid #3498db;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.pseudocode, .python-code {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.pseudocode pre, .python-code pre {
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#linked-list-visualizer {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.visualizer-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.visualizer-controls select,
+.visualizer-controls input,
+.visualizer-controls button {
+    padding: 8px;
+    font-size: 14px;
+}
+
+#linked-list-canvas {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#stack-queue-visualizer {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.data-structures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+#stack-queue-canvas {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.visualizer-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.visualizer-controls select,
+.visualizer-controls input,
+.visualizer-controls button {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.visualizer-controls button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.visualizer-controls button:hover {
+    background-color: #2980b9;
+}
+
+#tree-visualizer {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+#tree-canvas {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+#tree-info {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.trees-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.visualizer-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    justify-content: center;
+}
+
+.visualizer-controls select,
+.visualizer-controls input,
+.visualizer-controls button {
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+.visualizer-controls button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.visualizer-controls button:hover {
+    background-color: #2980b9;
+}
+

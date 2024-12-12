@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Materials</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>DSA Materials</h1>
+        <nav>
+            <ul>
+                <li><a href="#arrays">Arrays</a></li>
+                <li><a href="#linked-lists">Linked Lists</a></li>
+                <li><a href="#stacks-and-queues">Stacks and Queues</a></li>
+                <li><a href="#trees">Trees</a></li>
+                <li><a href="#graphs">Graphs</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="arrays">
+            <h2>Arrays</h2>
+            <div class="section-content">
+                <div class="description">
+                    <p>An array is a collection of elements of the same data type stored in contiguous memory locations.</p>
+                </div>
+                
+                <div class="sorting-algorithms">
+                    <h3>Sorting Algorithms</h3>
+                    <div class="algorithm-grid">
+                        <div class="algorithm-card" id="bubble-sort">
+                            <h4>Bubble Sort</h4>
+                            <p>Repeatedly steps through the list, comparing and swapping adjacent elements until sorted.</p>
+                            <div class="complexity-details">
+                                <span class="complexity">Time Complexity:</span>
+                                <ul>
+                                    <li>Best Case: O(n) - Already sorted</li>
+                                    <li>Average Case: O(n²)</li>
+                                    <li>Worst Case: O(n²)</li>
+                                </ul>
+                                <span class="space-complexity">Space Complexity: O(1)</span>
+                            </div>
+                            <div class="code-section">
+                                <div class="pseudocode">
+                                    <h5>Pseudocode</h5>
+                                    <pre>
+procedure bubbleSort(A: list of sortable items)
+    n = length(A)
+    for i = 0 to n-1
+        for j = 0 to n-i-1
+            if A[j] > A[j+1]
+                swap A[j] and A[j+1]
+            end if
+        end for
+    end for
+end procedure
+                                    </pre>
+                                </div>
+                                <div class="python-code">
+                                    <h5>Python Implementation</h5>
+                                    <pre><code>
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+                                    </code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="algorithm-card" id="selection-sort">
+                            <h4>Selection Sort</h4>
+                            <p>Selects the smallest element from the unsorted portion and places it at the beginning.</p>
+                            <div class="complexity-details">
+                                <span class="complexity">Time Complexity:</span>
+                                <ul>
+                                    <li>Best Case: O(n²)</li>
+                                    <li>Average Case: O(n²)</li>
+                                    <li>Worst Case: O(n²)</li>
+                                </ul>
+                                <span class="space-complexity">Space Complexity: O(1)</span>
+                            </div>
+                            <div class="code-section">
+                                <div class="pseudocode">
+                                    <h5>Pseudocode</h5>
+                                    <pre>
+procedure selectionSort(A: list of sortable items)
+    n = length(A)
+    for i = 0 to n-1
+        min_idx = i
+        for j = i+1 to n-1
+            if A[j] < A[min_idx]
+                min_idx = j
+            end if
+        end for
+        swap A[i] and A[min_idx]
+    end for
+end procedure
+                                    </pre>
+                                </div>
+                                <div class="python-code">
+                                    <h5>Python Implementation</h5>
+                                    <pre><code>
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        min_idx = i
+        for j in range(i+1, n):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+                                    </code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="algorithm-card" id="insertion-sort">
+                            <h4>Insertion Sort</h4>
+                            <p>Builds the final sorted array one item at a time, efficient for small datasets.</p>
+                            <div class="complexity-details">
+                                <span class="complexity">Time Complexity:</span>
+                                <ul>
+                                    <li>Best Case: O(n) - Nearly sorted</li>
+                                    <li>Average Case: O(n²)</li>
+                                    <li>Worst Case: O(n²)</li>
+                                </ul>
+                                <span class="space-complexity">Space Complexity: O(1)</span>
+                            </div>
+                            <div class="code-section">
+                                <div class="pseudocode">
+                                    <h5>Pseudocode</h5>
+                                    <pre>
+procedure insertionSort(A: list of sortable items)
+    for i = 1 to length(A)-1
+        key = A[i]
+        j = i - 1
+        while j >= 0 and A[j] > key
+            A[j+1] = A[j]
+            j = j - 1
+        end while
+        A[j+1] = key
+    end for
+end procedure
+                                    </pre>
+                                </div>
+                                <div class="python-code">
+                                    <h5>Python Implementation</h5>
+                                    <pre><code>
+def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        while j >= 0 and arr[j] > key:
+            arr[j+1] = arr[j]
+            j -= 1
+        arr[j+1] = key
+    return arr
+                                    </code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="algorithm-card" id="merge-sort">
+                            <h4>Merge Sort</h4>
+                            <p>Divide-and-conquer algorithm that splits, sorts, and merges sub-arrays.</p>
+                            <div class="complexity-details">
+                                <span class="complexity">Time Complexity:</span>
+                                <ul>
+                                    <li>Best Case: O(n log n)</li>
+                                    <li>Average Case: O(n log n)</li>
+                                    <li>Worst Case: O(n log n)</li>
+                                </ul>
+                                <span class="space-complexity">Space Complexity: O(n)</span>
+                            </div>
+                            <div class="code-section">
+                                <div class="pseudocode">
+                                    <h5>Pseudocode</h5>
+                                    <pre>
+procedure mergeSort(A: list of sortable items)
+    if length(A) <= 1
+        return A
+    end if
+    
+    mid = length(A) / 2
+    left = mergeSort(A[0:mid])
+    right = mergeSort(A[mid:end])
+    
+    return merge(left, right)
+end procedure
+
+procedure merge(left, right)
+    result = empty list
+    while left is not empty and right is not empty
+        if first(left) <= first(right)
+            append first(left) to result
+            left = rest of left
+        else
+            append first(right) to result
+            right = rest of right
+        end if
+    end while
+    
+    if left is not empty
+        append remaining left to result
+    if right is not empty
+        append remaining right to result
+    
+    return result
+end procedure
+                                    </pre>
+                                </div>
+                                <div class="python-code">
+                                    <h5>Python Implementation</h5>
+                                    <pre><code>
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    
+    mid = len(arr) // 2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
+    
+    return merge(left, right)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+    
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    
+    result.extend(left[i:])
+    result.extend(right[j:])
+    
+    return result
+                                    </code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="algorithm-card" id="quick-sort">
+                            <h4>Quick Sort</h4>
+                            <p>Picks a pivot element and partitions the array around it recursively.</p>
+                            <div class="complexity-details">
+                                <span class="complexity">Time Complexity:</span>
+                                <ul>
+                                    <li>Best Case: O(n log n)</li>
+                                    <li>Average Case: O(n log n)</li>
+                                    <li>Worst Case: O(n²) - Rare, with poor pivot selection</li>
+                                </ul>
+                                <span class="space-complexity">Space Complexity: O(log n)</span>
+                            </div>
+                            <div class="code-section">
+                                <div class="pseudocode">
+                                    <h5>Pseudocode</h5>
+                                    <pre>
+procedure quickSort(A: list of sortable items, low, high)
+    if low < high
+        pivotIndex = partition(A, low, high)
+        quickSort(A, low, pivotIndex - 1)
+        quickSort(A, pivotIndex + 1, high)
+    end if
+end procedure
+
+procedure partition(A, low, high)
+    pivot = A[high]
+    i = low - 1
+    
+    for j = low to high - 1
+        if A[j] < pivot
+            i = i + 1
+            swap A[i] and A[j]
+        end if
+    end for
+    
+    swap A[i + 1] and A[high]
+    return i + 1
+end procedure
+                                    </pre>
+                                </div>
+                                <div class="python-code">
+                                    <h5>Python Implementation</h5>
+                                    <pre><code>
+def quick_sort(arr):
+    def partition(low, high):
+        pivot = arr[high]
+        i = low - 1
+        
+        for j in range(low, high):
+            if arr[j] < pivot:
+                i += 1
+                arr[i], arr[j] = arr[j], arr[i]
+        
+        arr[i + 1], arr[high] = arr[high], arr[i + 1]
+        return i + 1
+    
+    def _quick_sort(low, high):
+        if low < high:
+            pivot_index = partition(low, high)
+            _quick_sort(low, pivot_index - 1)
+            _quick_sort(pivot_index + 1, high)
+    
+    _quick_sort(0, len(arr) - 1)
+    return arr
+                                    </code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="array-visualizer">
+                    <h3>Sorting Visualizer</h3>
+                    <canvas id="array-canvas"></canvas>
+                    <div class="controls">
+                        <select id="algorithm-select">
+                            <option value="bubble-sort">Bubble Sort</option>
+                            <option value="selection-sort">Selection Sort</option>
+                            <option value="insertion-sort">Insertion Sort</option>
+                            <option value="merge-sort">Merge Sort</option>
+                            <option value="quick-sort">Quick Sort</option>
+                        </select>
+                        <div class="speed-control">
+                            <label for="speed-slider">Sorting Speed</label>
+                            <input type="range" id="speed-slider" min="1" max="500" value="50">
+                        </div>
+                        <button id="sort-button">Visualize Sort</button>
+                        <button id="reset-button">Reset Array</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="linked-lists">
+            <h2>Linked Lists</h2>
+            <div class="section-content">
+                <div class="description">
+                    <p>A linked list is a linear data structure where elements are stored in nodes. Each node contains data and a reference (link) to the next node in the sequence.</p>
+                </div>
+
+                <div class="linked-list-types">
+                    <h3>Types of Linked Lists</h3>
+                    <div class="algorithm-grid">
+                        <div class="algorithm-card">
+                            <h4>Singly Linked List</h4>
+                            <p>Each node points to the next node in the sequence.</p>
+                            <div class="complexity-details">
+                                <span class="complexity">Operations:</span>
+                                <ul>
+                                    <li>Insertion: O(1) at beginning, O(n) at end</li>
+                                    <li>Deletion: O(1) at beginning, O(n) at end</li>
+                                    <li>Search: O(n)</li>
+                                </ul>
+                                <span class="space-complexity">Space Complexity: O(n)</span>
+                            </div>
+                            <div class="code-section">
+                                <div class="pseudocode">
+                                    <h5>Pseudocode: Node Structure</h5>
+                                    <pre>
+class Node
+    data: integer
+    next: reference to Node
+end class
+
+class SinglyLinkedList
+    head: reference to Node
+    
+    procedure insertAtBeginning(value)
+        newNode = new Node(value)
+        newNode.next = head
+        head = newNode
+    end procedure
+    
+    procedure deleteAtBeginning()
+        if head is not null
+            head = head.next
+        end if
+    end procedure
+                                    </pre>
+                                </div>
+                                <div class="python-code">
+                                    <h5>Python Implementation</h5>
+                                    <pre><code>
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+    
+    def insert_at_beginning(self, data):
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+    
+    def delete_at_beginning(self):
+        if self.head:
+            self.head = self.head.next
+                            </code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="algorithm-card">
+                            <h4>Doubly Linked List</h4>
+                            <p>Each node points to both the next and previous nodes.</p>
+                            <div class="complexity-details">
+                                <span class="complexity">Operations:</span>
+                                <ul>
+                                    <li>Insertion: O(1)</li>
+                                    <li>Deletion: O(1)</li>
+                                    <li>Search: O(n)</li>
+                                </ul>
+                                <span class="space-complexity">Space Complexity: O(n)</span>
+                            </div>
+                            <div class="code-section">
+                                <div class="pseudocode">
+                                    <h5>Pseudocode: Node Structure</h5>
+                                    <pre>
+class Node
+    data: integer
+    prev: reference to Node
+    next: reference to Node
+end class
+
+class DoublyLinkedList
+    head: reference to Node
+    tail: reference to Node
+    
+    procedure insertAtEnd(value)
+        newNode = new Node(value)
+        if head is null
+            head = newNode
+            tail = newNode
+        else
+            tail.next = newNode
+            newNode.prev = tail
+            tail = newNode
+        end if
+    end procedure
+                            </pre>
+                                </div>
+                                <div class="python-code">
+                                    <h5>Python Implementation</h5>
+                                    <pre><code>
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.prev = None
+        self.next = None
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+    
+    def insert_at_end(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            new_node.prev = self.tail
+            self.tail = new_node
+                            </code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="linked-list-visualizer">
+                    <h3>Linked List Visualizer</h3>
+                    <div class="visualizer-controls">
+                        <select id="linked-list-type">
+                            <option value="singly">Singly Linked List</option>
+                            <option value="doubly">Doubly Linked List</option>
+                        </select>
+                        <input type="text" id="node-value" placeholder="Node Value">
+                        <button id="insert-begin-btn">Insert at Begin</button>
+                        <button id="insert-end-btn">Insert at End</button>
+                        <button id="delete-begin-btn">Delete at Begin</button>
+                    </div>
+                    <canvas id="linked-list-canvas" width="800" height="200"></canvas>
+                </div>
+            </div>
+        </section>
+        <section id="stacks-and-queues">
+            <h2>Stacks and Queues</h2>
+            <div class="section-content">
+                <div class="description">
+                    <p>Stacks and Queues are linear data structures with distinct insertion and deletion behaviors.</p>
+                </div>
+
+                <div class="data-structures-grid">
+                    <div class="algorithm-card">
+                        <h4>Stack (LIFO - Last In, First Out)</h4>
+                        <p>Elements are added and removed from the same end, like a stack of plates.</p>
+                        <div class="complexity-details">
+                            <span class="complexity">Operations:</span>
+                            <ul>
+                                <li>Push: O(1)</li>
+                                <li>Pop: O(1)</li>
+                                <li>Peek: O(1)</li>
+                            </ul>
+                            <span class="space-complexity">Space Complexity: O(n)</span>
+                        </div>
+                        <div class="code-section">
+                            <div class="pseudocode">
+                                <h5>Pseudocode: Stack Operations</h5>
+                                <pre>
+class Stack
+    items: array
+    top: integer = -1
+    
+    procedure push(element)
+        if top < max_size - 1
+            top = top + 1
+            items[top] = element
+        else
+            print "Stack Overflow"
+        end if
+    end procedure
+    
+    procedure pop()
+        if top >= 0
+            element = items[top]
+            top = top - 1
+            return element
+        else
+            print "Stack Underflow"
+        end if
+    end procedure
+                                </pre>
+                            </div>
+                            <div class="python-code">
+                                <h5>Python Implementation</h5>
+                                <pre><code>
+class Stack:
+    def __init__(self, max_size=10):
+        self.items = [None] * max_size
+        self.max_size = max_size
+        self.top = -1
+    
+    def push(self, element):
+        if self.top < self.max_size - 1:
+            self.top += 1
+            self.items[self.top] = element
+        else:
+            print("Stack Overflow")
+    
+    def pop(self):
+        if self.top >= 0:
+            element = self.items[self.top]
+            self.top -= 1
+            return element
+        else:
+            print("Stack Underflow")
+                                </code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="algorithm-card">
+                        <h4>Queue (FIFO - First In, First Out)</h4>
+                        <p>Elements are added at the rear and removed from the front, like a line of people.</p>
+                        <div class="complexity-details">
+                            <span class="complexity">Operations:</span>
+                            <ul>
+                                <li>Enqueue: O(1)</li>
+                                <li>Dequeue: O(1)</li>
+                                <li>Front: O(1)</li>
+                            </ul>
+                            <span class="space-complexity">Space Complexity: O(n)</span>
+                        </div>
+                        <div class="code-section">
+                            <div class="pseudocode">
+                                <h5>Pseudocode: Queue Operations</h5>
+                                <pre>
+class Queue
+    items: array
+    front: integer = 0
+    rear: integer = -1
+    
+    procedure enqueue(element)
+        if rear < max_size - 1
+            rear = rear + 1
+            items[rear] = element
+        else
+            print "Queue is Full"
+        end if
+    end procedure
+    
+    procedure dequeue()
+        if front <= rear
+            element = items[front]
+            front = front + 1
+            return element
+        else
+            print "Queue is Empty"
+        end if
+    end procedure
+                                </pre>
+                            </div>
+                            <div class="python-code">
+                                <h5>Python Implementation</h5>
+                                <pre><code>
+class Queue:
+    def __init__(self, max_size=10):
+        self.items = [None] * max_size
+        self.max_size = max_size
+        self.front = 0
+        self.rear = -1
+        self.size = 0
+    
+    def enqueue(self, element):
+        if self.rear < self.max_size - 1:
+            self.rear += 1
+            self.items[self.rear] = element
+            self.size += 1
+        else:
+            print("Queue is Full")
+    
+    def dequeue(self):
+        if self.front <= self.rear:
+            element = self.items[self.front]
+            self.front += 1
+            self.size -= 1
+            return element
+        else:
+            print("Queue is Empty")
+                                </code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="stack-queue-visualizer">
+                    <h3>Stack and Queue Visualizer</h3>
+                    <div class="visualizer-controls">
+                        <select id="data-structure-type">
+                            <option value="stack">Stack</option>
+                            <option value="queue">Queue</option>
+                        </select>
+                        <input type="text" id="element-value" placeholder="Element Value">
+                        <button id="push-enqueue-btn">Push/Enqueue</button>
+                        <button id="pop-dequeue-btn">Pop/Dequeue</button>
+                    </div>
+                    <canvas id="stack-queue-canvas" width="800" height="200"></canvas>
+                </div>
+            </div>
+        </section>
+        <section id="trees">
+            <h2>Trees</h2>
+            <div class="section-content">
+                <div class="description">
+                    <p>Trees are hierarchical data structures composed of nodes, with a root node and child nodes forming a branching structure.</p>
+                </div>
+
+                <div class="trees-grid">
+                    <div class="algorithm-card">
+                        <h4>Binary Tree</h4>
+                        <p>A tree data structure where each node has at most two children: left and right.</p>
+                        <div class="complexity-details">
+                            <span class="complexity">Operations:</span>
+                            <ul>
+                                <li>Insertion: O(n)</li>
+                                <li>Deletion: O(n)</li>
+                                <li>Search: O(n)</li>
+                            </ul>
+                            <span class="space-complexity">Space Complexity: O(n)</span>
+                        </div>
+                        <div class="code-section">
+                            <div class="pseudocode">
+                                <h5>Pseudocode: Binary Tree Node</h5>
+                                <pre>
+class TreeNode
+    data: integer
+    left: reference to TreeNode
+    right: reference to TreeNode
+    
+    procedure insert(value)
+        if value < data
+            if left is null
+                left = new TreeNode(value)
+            else
+                left.insert(value)
+            end if
+        else
+            if right is null
+                right = new TreeNode(value)
+            else
+                right.insert(value)
+            end if
+        end if
+    end procedure
+                                </pre>
+                            </div>
+                            <div class="python-code">
+                                <h5>Python Implementation</h5>
+                                <pre><code>
+class TreeNode:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+    
+    def insert(self, value):
+        if value < self.data:
+            if self.left is None:
+                self.left = TreeNode(value)
+            else:
+                self.left.insert(value)
+        else:
+            if self.right is None:
+                self.right = TreeNode(value)
+            else:
+                self.right.insert(value)
+                
+    def inorder_traversal(self):
+        result = []
+        if self.left:
+            result.extend(self.left.inorder_traversal())
+        result.append(self.data)
+        if self.right:
+            result.extend(self.right.inorder_traversal())
+        return result
+                                </code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="algorithm-card">
+                        <h4>Binary Search Tree (BST)</h4>
+                        <p>A binary tree with the property that left child is less than parent, and right child is greater.</p>
+                        <div class="complexity-details">
+                            <span class="complexity">Operations:</span>
+                            <ul>
+                                <li>Insertion: O(log n) - Balanced</li>
+                                <li>Deletion: O(log n) - Balanced</li>
+                                <li>Search: O(log n) - Balanced</li>
+                            </ul>
+                            <span class="space-complexity">Space Complexity: O(n)</span>
+                        </div>
+                        <div class="code-section">
+                            <div class="pseudocode">
+                                <h5>Pseudocode: BST Operations</h5>
+                                <pre>
+class BinarySearchTree
+    root: reference to TreeNode
+    
+    procedure insert(value)
+        if root is null
+            root = new TreeNode(value)
+        else
+            root.insert(value)
+        end if
+    
+    procedure search(value)
+        current = root
+        while current is not null
+            if value == current.data
+                return current
+            else if value < current.data
+                current = current.left
+            else
+                current = current.right
+            end if
+        end while
+        return null
+    end procedure
+                                </pre>
+                            </div>
+                            <div class="python-code">
+                                <h5>Python Implementation</h5>
+                                <pre><code>
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+    
+    def insert(self, value):
+        if self.root is None:
+            self.root = TreeNode(value)
+        else:
+            self._insert_recursive(self.root, value)
+    
+    def _insert_recursive(self, node, value):
+        if value < node.data:
+            if node.left is None:
+                node.left = TreeNode(value)
+            else:
+                self._insert_recursive(node.left, value)
+        else:
+            if node.right is None:
+                node.right = TreeNode(value)
+            else:
+                self._insert_recursive(node.right, value)
+    
+    def search(self, value):
+        return self._search_recursive(self.root, value)
+    
+    def _search_recursive(self, node, value):
+        if node is None or node.data == value:
+            return node
+        
+        if value < node.data:
+            return self._search_recursive(node.left, value)
+        return self._search_recursive(node.right, value)
+                                </code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tree-visualizer">
+                    <h3>Tree Visualizer</h3>
+                    <div class="visualizer-controls">
+                        <select id="tree-type">
+                            <option value="binary">Binary Tree</option>
+                            <option value="bst">Binary Search Tree</option>
+                        </select>
+                        <input type="text" id="node-value" placeholder="Node Value">
+                        <button id="insert-node-btn">Insert Node</button>
+                        <button id="search-node-btn">Search Node</button>
+                        <button id="clear-tree-btn">Clear Tree</button>
+                    </div>
+                    <canvas id="tree-canvas" width="800" height="400"></canvas>
+                    <div id="tree-info"></div>
+                </div>
+            </div>
+        </section>
+        <section id="graphs">
+            <h2>Graphs</h2>
+            <p>A graph is a non-linear data structure, where each node is connected to zero or more other nodes.</p>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+

@@ -10,56 +10,120 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
+            background-color: #121212;
+            color: #ffffff;
         }
 
         .container {
-            background-color: white;
+            background-color: #1e1e1e;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        h1 {
-            color: #2c3e50;
+        h1, h2, h3 {
+            color: #3498db;
             text-align: center;
         }
 
         .tree-demo {
             margin: 20px 0;
             padding: 20px;
-            border: 1px solid #ddd;
+            border: 1px solid #333;
             border-radius: 5px;
+            background-color: #1a1a1a;
+        }
+
+        .visualization-container {
+            width: 100%;
+            height: 400px;
+            margin: 20px 0;
+            position: relative;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #1e1e1e;
+        }
+
+        #tree-canvas {
+            width: 100%;
+            height: 100%;
+            background-color: #1e1e1e;
         }
 
         .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
             margin-bottom: 20px;
+            padding: 10px;
+            background-color: #242424;
+            border-radius: 8px;
+        }
+
+        .control-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
         .controls button {
-            margin-right: 10px;
-            padding: 8px 16px;
+            padding: 10px 20px;
             background-color: #3498db;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .controls button:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .controls button:disabled {
+            background-color: #2c3e50;
+            cursor: not-allowed;
+        }
+
+        .input-field {
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            width: 120px;
+            font-size: 16px;
+            background-color: #2d2d2d;
+            color: #ffffff;
+        }
+
+        .input-field::placeholder {
+            color: #888;
         }
 
         .traversal-output {
             margin-top: 20px;
-            padding: 10px;
-            background-color: #f8f9fa;
+            padding: 15px;
+            background-color: #242424;
             border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .traversal-group {
+            margin: 10px 0;
+            color: #ffffff;
+        }
+
+        .traversal-label {
+            font-weight: bold;
+            color: #3498db;
+            margin-right: 10px;
         }
 
         #traversal-result {
             font-family: monospace;
-            color: #2c3e50;
+            color: #ffffff;
             font-weight: bold;
         }
 
@@ -71,16 +135,80 @@
             color: white;
             text-decoration: none;
             border-radius: 4px;
+            transition: all 0.3s ease;
         }
 
         .back-button:hover {
             background-color: #2980b9;
+            transform: translateY(-2px);
         }
 
-        .input-field {
-            margin-top: 10px;
-            padding: 8px;
-            width: 100px;
+        .explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #242424;
+            border-radius: 8px;
+        }
+
+        .explanation ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .explanation li {
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #ffffff;
+        }
+
+        .explanation li:before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .explanation strong {
+            color: #3498db;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #3498db;
+            border-radius: 6px;
+            border: 3px solid #1e1e1e;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+
+            .control-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .input-field {
+                width: 100%;
+            }
+
+            .visualization-container {
+                height: 300px;
+            }
         }
     </style>
 </head>
@@ -92,24 +220,48 @@
 
         <div class="tree-demo">
             <h2>Binary Tree Operations</h2>
-            <p>This is a simple demonstration of binary tree operations including insertion and traversal.</p>
             
+            <div class="visualization-container">
+                <canvas id="tree-canvas"></canvas>
+            </div>
+
             <div class="controls">
-                <input type="number" id="node-value" class="input-field" placeholder="Enter a value" />
-                <button id="insert-node">Insert Node</button>
-                <button id="traverse-tree">Traverse Tree</button>
-                <button id="reset-tree">Reset</button>
+                <div class="control-group">
+                    <input type="number" id="node-value" class="input-field" placeholder="Enter value" />
+                    <button id="insert-node">Insert Node</button>
+                    <button id="delete-node">Delete Node</button>
+                </div>
+                <div class="control-group">
+                    <button id="traverse-inorder">Inorder</button>
+                    <button id="traverse-preorder">Preorder</button>
+                    <button id="traverse-postorder">Postorder</button>
+                    <button id="reset-tree">Reset Tree</button>
+                </div>
             </div>
 
             <div class="traversal-output">
-                <p>Traversal Order: <span id="traversal-result"></span></p>
+                <div class="traversal-group">
+                    <span class="traversal-label">Inorder:</span>
+                    <span id="inorder-result"></span>
+                </div>
+                <div class="traversal-group">
+                    <span class="traversal-label">Preorder:</span>
+                    <span id="preorder-result"></span>
+                </div>
+                <div class="traversal-group">
+                    <span class="traversal-label">Postorder:</span>
+                    <span id="postorder-result"></span>
+                </div>
             </div>
 
             <div class="explanation">
-                <h3>How it works:</h3>
+                <h3>Tree Operations:</h3>
                 <ul>
-                    <li><strong>Insertion:</strong> Adds a new node to the binary tree.</li>
-                    <li><strong>Traversal:</strong> Displays the nodes in in-order.</li>
+                    <li><strong>Insert:</strong> Adds a new node to the binary search tree</li>
+                    <li><strong>Delete:</strong> Removes a node from the tree</li>
+                    <li><strong>Inorder:</strong> Left → Root → Right</li>
+                    <li><strong>Preorder:</strong> Root → Left → Right</li>
+                    <li><strong>Postorder:</strong> Left → Right → Root</li>
                 </ul>
             </div>
         </div>
@@ -154,46 +306,216 @@
                 }
             }
 
-            inOrder(node, result) {
+            delete(value) {
+                this.root = this.deleteNode(this.root, value);
+            }
+
+            deleteNode(node, value) {
+                if (node === null) {
+                    return null;
+                }
+
+                if (value < node.value) {
+                    node.left = this.deleteNode(node.left, value);
+                    return node;
+                } else if (value > node.value) {
+                    node.right = this.deleteNode(node.right, value);
+                    return node;
+                } else {
+                    // Node to delete found
+                    
+                    // Case 1: Leaf node
+                    if (!node.left && !node.right) {
+                        return null;
+                    }
+                    
+                    // Case 2: Node with one child
+                    if (!node.left) {
+                        return node.right;
+                    }
+                    if (!node.right) {
+                        return node.left;
+                    }
+                    
+                    // Case 3: Node with two children
+                    let minNode = this.findMin(node.right);
+                    node.value = minNode.value;
+                    node.right = this.deleteNode(node.right, minNode.value);
+                    return node;
+                }
+            }
+
+            findMin(node) {
+                while (node.left) {
+                    node = node.left;
+                }
+                return node;
+            }
+
+            inOrder(node = this.root, result = []) {
                 if (node) {
                     this.inOrder(node.left, result);
                     result.push(node.value);
                     this.inOrder(node.right, result);
                 }
+                return result;
+            }
+
+            preOrder(node = this.root, result = []) {
+                if (node) {
+                    result.push(node.value);
+                    this.preOrder(node.left, result);
+                    this.preOrder(node.right, result);
+                }
+                return result;
+            }
+
+            postOrder(node = this.root, result = []) {
+                if (node) {
+                    this.postOrder(node.left, result);
+                    this.postOrder(node.right, result);
+                    result.push(node.value);
+                }
+                return result;
             }
         }
 
+        class TreeVisualizer {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.setCanvasSize();
+                window.addEventListener('resize', () => this.setCanvasSize());
+            }
+
+            setCanvasSize() {
+                this.canvas.width = this.canvas.offsetWidth;
+                this.canvas.height = this.canvas.offsetHeight;
+            }
+
+            clear() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+
+            drawNode(x, y, value, highlighted = false) {
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, 25, 0, Math.PI * 2);
+                this.ctx.fillStyle = highlighted ? '#e74c3c' : '#3498db';
+                this.ctx.fill();
+                this.ctx.strokeStyle = '#2980b9';
+                this.ctx.lineWidth = 2;
+                this.ctx.stroke();
+
+                this.ctx.font = '16px Arial';
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline = 'middle';
+                this.ctx.fillText(value, x, y);
+            }
+
+            drawEdge(startX, startY, endX, endY) {
+                this.ctx.beginPath();
+                this.ctx.moveTo(startX, startY);
+                this.ctx.lineTo(endX, endY);
+                this.ctx.strokeStyle = '#2980b9';
+                this.ctx.lineWidth = 2;
+                this.ctx.stroke();
+            }
+
+            drawTree(node, x, y, level = 0, offset = this.canvas.width / 4) {
+                if (!node) return;
+
+                this.drawNode(x, y, node.value);
+
+                if (node.left) {
+                    const childX = x - offset;
+                    const childY = y + 80;
+                    this.drawEdge(x, y + 25, childX, childY - 25);
+                    this.drawTree(node.left, childX, childY, level + 1, offset / 2);
+                }
+
+                if (node.right) {
+                    const childX = x + offset;
+                    const childY = y + 80;
+                    this.drawEdge(x, y + 25, childX, childY - 25);
+                    this.drawTree(node.right, childX, childY, level + 1, offset / 2);
+                }
+            }
+        }
+
+        // Initialize visualizer and tree
+        const visualizer = new TreeVisualizer('tree-canvas');
         const binaryTree = new BinaryTree();
 
+        // Add event listeners and update UI functions
         document.addEventListener('DOMContentLoaded', () => {
             const insertButton = document.getElementById('insert-node');
-            const traverseButton = document.getElementById('traverse-tree');
+            const deleteButton = document.getElementById('delete-node');
+            const inorderButton = document.getElementById('traverse-inorder');
+            const preorderButton = document.getElementById('traverse-preorder');
+            const postorderButton = document.getElementById('traverse-postorder');
             const resetButton = document.getElementById('reset-tree');
-            const resultSpan = document.getElementById('traversal-result');
             const nodeValueInput = document.getElementById('node-value');
+            const inorderResult = document.getElementById('inorder-result');
+            const preorderResult = document.getElementById('preorder-result');
+            const postorderResult = document.getElementById('postorder-result');
+
+            function updateVisualization() {
+                visualizer.clear();
+                visualizer.drawTree(binaryTree.root, visualizer.canvas.width / 2, 50);
+            }
+
+            function updateTraversals() {
+                inorderResult.textContent = binaryTree.inOrder().join(' → ');
+                preorderResult.textContent = binaryTree.preOrder().join(' → ');
+                postorderResult.textContent = binaryTree.postOrder().join(' → ');
+            }
 
             insertButton.addEventListener('click', () => {
                 const value = parseInt(nodeValueInput.value);
                 if (!isNaN(value)) {
                     binaryTree.insert(value);
-                    alert(`Inserted: ${value}`);
-                    nodeValueInput.value = ''; // Clear input field
-                } else {
-                    alert('Please enter a valid number.');
+                    updateVisualization();
+                    updateTraversals();
+                    nodeValueInput.value = '';
                 }
             });
 
-            traverseButton.addEventListener('click', () => {
-                const result = [];
-                binaryTree.inOrder(binaryTree.root, result);
-                resultSpan.textContent = result.join(' → ');
+            deleteButton.addEventListener('click', () => {
+                const value = parseInt(nodeValueInput.value);
+                if (!isNaN(value)) {
+                    binaryTree.delete(value);
+                    updateVisualization();
+                    updateTraversals();
+                    nodeValueInput.value = '';
+                }
+            });
+
+            inorderButton.addEventListener('click', () => {
+                inorderResult.textContent = binaryTree.inOrder().join(' → ');
+            });
+
+            preorderButton.addEventListener('click', () => {
+                preorderResult.textContent = binaryTree.preOrder().join(' → ');
+            });
+
+            postorderButton.addEventListener('click', () => {
+                postorderResult.textContent = binaryTree.postOrder().join(' → ');
             });
 
             resetButton.addEventListener('click', () => {
-                binaryTree.root = null; // Reset the tree
-                resultSpan.textContent = '';
-                nodeValueInput.value = ''; // Clear input field
-                alert('Tree has been reset.');
+                binaryTree.root = null;
+                updateVisualization();
+                inorderResult.textContent = '';
+                preorderResult.textContent = '';
+                postorderResult.textContent = '';
+            });
+
+            // Add keyboard support for input
+            nodeValueInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    insertButton.click();
+                }
             });
         });
     </script>

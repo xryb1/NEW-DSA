@@ -151,6 +151,82 @@ async function partition(arr, low, high) {
   return i + 1;
 }
 
+// Bubble sort function with visualization
+async function bubbleSort() {
+  isSorting = true;
+  for (let i = 0; i < array.length - 1; i++) {
+    for (let j = 0; j < array.length - i - 1; j++) {
+      if (array[j] > array[j + 1]) {
+        // Swap elements
+        [array[j], array[j + 1]] = [array[j + 1], array[j]];
+        // Draw array with current elements highlighted
+        drawArray([j, j + 1]);
+        // Add delay for visualization
+        await sleep(getSpeed());
+      }
+    }
+  }
+  drawArray();
+  isSorting = false;
+}
+
+// Selection sort function with visualization
+async function selectionSort() {
+  isSorting = true;
+  for (let i = 0; i < array.length - 1; i++) {
+    let minIdx = i;
+    // Draw current minimum element
+    drawArray([minIdx]);
+    await sleep(getSpeed());
+    
+    for (let j = i + 1; j < array.length; j++) {
+      if (array[j] < array[minIdx]) {
+        minIdx = j;
+        // Draw new minimum element found
+        drawArray([minIdx, i]);
+        await sleep(getSpeed());
+      }
+    }
+    
+    if (minIdx !== i) {
+      // Swap elements
+      [array[i], array[minIdx]] = [array[minIdx], array[i]];
+      // Draw the swap
+      drawArray([i, minIdx]);
+      await sleep(getSpeed());
+    }
+  }
+  drawArray();
+  isSorting = false;
+}
+
+// Insertion sort function with visualization
+async function insertionSort() {
+  isSorting = true;
+  for (let i = 1; i < array.length; i++) {
+    let key = array[i];
+    let j = i - 1;
+    
+    // Draw current element being inserted
+    drawArray([i]);
+    await sleep(getSpeed());
+    
+    while (j >= 0 && array[j] > key) {
+      array[j + 1] = array[j];
+      // Draw shifting of elements
+      drawArray([j, j + 1]);
+      await sleep(getSpeed());
+      j--;
+    }
+    array[j + 1] = key;
+    // Draw insertion of element
+    drawArray([j + 1]);
+    await sleep(getSpeed());
+  }
+  drawArray();
+  isSorting = false;
+}
+
 // Add event listener to the sort button
 sortButton.addEventListener('click', async () => {
   if (isSorting) return;
@@ -166,7 +242,6 @@ sortButton.addEventListener('click', async () => {
       case 'quick-sort':
         await quickSort(array);
         break;
-      // Keep existing sorting algorithms
       case 'bubble-sort':
         await bubbleSort();
         break;
@@ -192,50 +267,6 @@ resetButton.addEventListener('click', () => {
   }
 });
 
-// Bubble sort function
-function bubbleSort() {
-  for (let i = 0; i < array.length; i++) {
-    for (let j = 0; j < array.length - i - 1; j++) {
-      if (array[j] > array[j + 1]) {
-        [array[j], array[j + 1]] = [array[j + 1], array[j]];
-      }
-    }
-    drawArray();
-    setTimeout(() => {}, 10);
-  }
-}
-
-// Selection sort function
-function selectionSort() {
-  for (let i = 0; i < array.length; i++) {
-    let minIndex = i;
-    for (let j = i + 1; j < array.length; j++) {
-      if (array[j] < array[minIndex]) {
-        minIndex = j;
-      }
-    }
-    [array[i], array[minIndex]] = [array[minIndex], array[i]];
-    drawArray();
-    setTimeout(() => {}, 10);
-  }
-}
-
-// Insertion sort function
-function insertionSort() {
-  for (let i = 1; i < array.length; i++) {
-    let key = array[i];
-    let j = i - 1;
-    while (j >= 0 && array[j] > key) {
-      array[j + 1] = array[j];
-      j--;
-    }
-    array[j + 1] = key;
-    drawArray();
-    setTimeout(() => {}, 10);
-  }
-}
-
-// Linked List Visualizer
 class LinkedListNode {
     constructor(data) {
         this.data = data;
@@ -498,109 +529,59 @@ document.getElementById('pop-dequeue-btn').addEventListener('click', () => {
     stackQueueVisualizer.popOrDequeue();
 });
 
-class TreeNode {
-    constructor(value) {
-        this.value = value;
-        this.left = null;
-        this.right = null;
-    }
+const staticCanvas = document.getElementById('static-tree-canvas');
+const staticCtx = staticCanvas.getContext('2d');
+
+function drawStaticTree() {
+    staticCtx.clearRect(0, 0, staticCanvas.width, staticCanvas.height);
+    
+    // Example static tree structure
+    const tree = {
+        value: 50,
+        left: {
+            value: 30,
+            left: { value: 20, left: null, right: null },
+            right: { value: 40, left: null, right: null }
+        },
+        right: {
+            value: 70,
+            left: { value: 60, left: null, right: null },
+            right: { value: 80, left: null, right: null }
+        }
+    };
+
+    drawNode(tree, staticCanvas.width / 2, 30, staticCanvas.width / 4);
 }
 
-class SimpleTreeVisualizer {
-    constructor() {
-        this.canvas = document.getElementById('tree-canvas');
-        if (!this.canvas) {
-            console.error('Canvas not found!');
-            return;
-        }
-        this.ctx = this.canvas.getContext('2d');
-        this.root = null;
+function drawNode(node, x, y, offset) {
+    if (!node) return;
+
+    // Draw connections to children
+    if (node.left) {
+        staticCtx.beginPath();
+        staticCtx.moveTo(x, y);
+        staticCtx.lineTo(x - offset, y + 70);
+        staticCtx.stroke();
+    }
+    if (node.right) {
+        staticCtx.beginPath();
+        staticCtx.moveTo(x, y);
+        staticCtx.lineTo(x + offset, y + 70);
+        staticCtx.stroke();
     }
 
-    insert(value) {
-        const newNode = new TreeNode(parseInt(value));
-        
-        if (!this.root) {
-            this.root = newNode;
-            this.drawTree();
-            return;
-        }
-
-        this._insertNode(this.root, newNode);
-        this.drawTree();
-    }
-
-    _insertNode(currentNode, newNode) {
-        if (newNode.value < currentNode.value) {
-            if (!currentNode.left) {
-                currentNode.left = newNode;
-            } else {
-                this._insertNode(currentNode.left, newNode);
-            }
-        } else {
-            if (!currentNode.right) {
-                currentNode.right = newNode;
-            } else {
-                this._insertNode(currentNode.right, newNode);
-            }
-        }
-    }
-
-    drawTree() {
-        console.log('Drawing tree...');
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this._drawNode(this.root, this.canvas.width / 2, 50, this.canvas.width / 4);
-    }
-
-    _drawNode(node, x, y, spread) {
-        if (!node) return;
-
-        // Draw node
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, 20, 0, 2 * Math.PI);
-        this.ctx.fillStyle = 'blue';
-        this.ctx.fill();
-
-        // Draw value
-        this.ctx.fillStyle = 'white';
-        this.ctx.font = '12px Arial';
-        this.ctx.textAlign = 'center';
-        this.ctx.textBaseline = 'middle';
-        this.ctx.fillText(node.value, x, y);
-
-        // Recursively draw children
-        if (node.left) {
-            this.ctx.beginPath();
-            this.ctx.moveTo(x, y + 20);
-            this.ctx.lineTo(x - spread, y + 80);
-            this.ctx.stroke();
-            this._drawNode(node.left, x - spread, y + 80, spread / 2);
-        }
-
-        if (node.right) {
-            this.ctx.beginPath();
-            this.ctx.moveTo(x, y + 20);
-            this.ctx.lineTo(x + spread, y + 80);
-            this.ctx.stroke();
-            this._drawNode(node.right, x + spread, y + 80, spread / 2);
-        }
-    }
+    // Draw the node
+    staticCtx.beginPath();
+    staticCtx.arc(x, y, 20, 0, Math.PI * 2);
+    staticCtx.fillStyle = '#3498db';
+    staticCtx.fill();
+    staticCtx.fillStyle = '#fff';
+    staticCtx.fillText(node.value, x, y);
+    
+    // Recursively draw children
+    drawNode(node.left, x - offset, y + 70, offset / 2);
+    drawNode(node.right, x + offset, y + 70, offset / 2);
 }
 
-// Initialize Tree Visualizer
-const treeVisualizer = new SimpleTreeVisualizer();
-
-// Event Listeners
-document.getElementById('insert-node-btn').addEventListener('click', () => {
-    const value = document.getElementById('node-value').value;
-    if (value) {
-        treeVisualizer.insert(value);
-        document.getElementById('node-value').value = '';
-    }
-});
-
-document.getElementById('clear-tree-btn').addEventListener('click', () => {
-    treeVisualizer = new SimpleTreeVisualizer();
-});
-
-
+// Call the function to draw the static tree
+drawStaticTree();

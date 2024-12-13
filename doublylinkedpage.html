@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doubly Linked List Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #121212;
+            color: #ffffff;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        h1, h2 {
+            color: #3498db;
+            text-align: center;
+        }
+
+        .visualization-container {
+            width: 100%;
+            height: 400px;
+            margin: 20px 0;
+            position: relative;
+            border: 1px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #1e1e1e;
+        }
+
+        #linked-list-canvas {
+            width: 100%;
+            height: 100%;
+            background-color: #1e1e1e;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #242424;
+            border-radius: 8px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background-color: #2d2d2d;
+            color: #ffffff;
+            width: 120px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #242424;
+            border-radius: 8px;
+        }
+
+        .explanation h3 {
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .explanation ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .explanation li {
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .explanation li:before {
+            content: "•";
+            color: #3498db;
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+
+            .input-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            input {
+                width: 100%;
+            }
+
+            .visualization-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Doubly Linked List Visualization</h1>
+        
+        <a href="index.html" class="back-button">Back to Main Page</a>
+
+        <div class="controls">
+            <div class="input-group">
+                <input type="number" id="node-value" placeholder="Enter value" />
+                <button id="insert-end">Insert at End</button>
+                <button id="insert-begin">Insert at Beginning</button>
+                <button id="delete-node">Delete Node</button>
+                <button id="generate-random">Generate Random List</button>
+                <button id="reset-list">Reset List</button>
+            </div>
+        </div>
+
+        <div class="visualization-container">
+            <canvas id="linked-list-canvas"></canvas>
+        </div>
+
+        <div class="explanation">
+            <h3>Doubly Linked List Operations:</h3>
+            <ul>
+                <li><strong>Insert at End:</strong> Adds a new node at the end of the list</li>
+                <li><strong>Insert at Beginning:</strong> Adds a new node at the start, making it the new head</li>
+                <li><strong>Delete Node:</strong> Removes the specified node and updates both prev and next connections</li>
+                <li><strong>Generate Random:</strong> Creates a random list with 3-7 nodes</li>
+                <li><strong>Reset:</strong> Clears the entire list</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        class Node {
+            constructor(value) {
+                this.value = value;
+                this.next = null;
+                this.prev = null;
+            }
+        }
+
+        class DoublyLinkedList {
+            constructor() {
+                this.head = null;
+                this.tail = null;
+            }
+
+            insertAtBeginning(value) {
+                const newNode = new Node(value);
+                if (!this.head) {
+                    this.head = newNode;
+                    this.tail = newNode;
+                } else {
+                    newNode.next = this.head;
+                    this.head.prev = newNode;
+                    this.head = newNode;
+                }
+            }
+
+            insertAtEnd(value) {
+                const newNode = new Node(value);
+                if (!this.head) {
+                    this.head = newNode;
+                    this.tail = newNode;
+                } else {
+                    this.tail.next = newNode;
+                    newNode.prev = this.tail;
+                    this.tail = newNode;
+                }
+            }
+
+            deleteNode(value) {
+                if (!this.head) return;
+
+                let current = this.head;
+
+                while (current) {
+                    if (current.value === value) {
+                        if (current === this.head && current === this.tail) {
+                            this.head = null;
+                            this.tail = null;
+                        } else if (current === this.head) {
+                            this.head = current.next;
+                            this.head.prev = null;
+                        } else if (current === this.tail) {
+                            this.tail = current.prev;
+                            this.tail.next = null;
+                        } else {
+                            current.prev.next = current.next;
+                            current.next.prev = current.prev;
+                        }
+                        return;
+                    }
+                    current = current.next;
+                }
+            }
+
+            clear() {
+                this.head = null;
+                this.tail = null;
+            }
+        }
+
+        class LinkedListVisualizer {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.setCanvasSize();
+                window.addEventListener('resize', () => this.setCanvasSize());
+            }
+
+            setCanvasSize() {
+                this.canvas.width = this.canvas.offsetWidth;
+                this.canvas.height = this.canvas.offsetHeight;
+            }
+
+            clear() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+
+            drawNode(x, y, value, isHead = false, isTail = false) {
+                // Draw node circle
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, 25, 0, Math.PI * 2);
+                this.ctx.fillStyle = isHead ? '#e74c3c' : isTail ? '#27ae60' : '#3498db';
+                this.ctx.fill();
+                this.ctx.strokeStyle = '#2980b9';
+                this.ctx.lineWidth = 2;
+                this.ctx.stroke();
+
+                // Draw value
+                this.ctx.font = '16px Arial';
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline = 'middle';
+                this.ctx.fillText(value, x, y);
+            }
+
+            drawArrow(startX, startY, endX, endY, direction = 'next') {
+                const yOffset = direction === 'next' ? -10 : 10;
+                
+                this.ctx.beginPath();
+                this.ctx.moveTo(startX, startY);
+                this.ctx.lineTo(endX, endY);
+                this.ctx.strokeStyle = direction === 'next' ? '#2980b9' : '#e74c3c';
+                this.ctx.lineWidth = 2;
+                this.ctx.stroke();
+
+                // Draw arrowhead
+                const angle = Math.atan2(endY - startY, endX - startX);
+                this.ctx.beginPath();
+                this.ctx.moveTo(endX, endY);
+                this.ctx.lineTo(
+                    endX - 10 * Math.cos(angle - Math.PI / 6),
+                    endY - 10 * Math.sin(angle - Math.PI / 6)
+                );
+                this.ctx.lineTo(
+                    endX - 10 * Math.cos(angle + Math.PI / 6),
+                    endY - 10 * Math.sin(angle + Math.PI / 6)
+                );
+                this.ctx.closePath();
+                this.ctx.fillStyle = direction === 'next' ? '#2980b9' : '#e74c3c';
+                this.ctx.fill();
+            }
+
+            drawList(list) {
+                this.clear();
+                
+                if (!list.head) return;
+
+                const nodeSpacing = 120;
+                const startX = 100;
+                const centerY = this.canvas.height / 2;
+                
+                let current = list.head;
+                let x = startX;
+                let positions = [];
+
+                // First pass: store positions
+                while (current) {
+                    positions.push({ x, y: centerY });
+                    x += nodeSpacing;
+                    current = current.next;
+                }
+
+                // Second pass: draw nodes and connections
+                current = list.head;
+                for (let i = 0; i < positions.length; i++) {
+                    const pos = positions[i];
+                    const nextPos = i < positions.length - 1 ? positions[i + 1] : null;
+                    
+                    // Draw connections
+                    if (nextPos) {
+                        // Draw next pointer
+                        this.drawArrow(pos.x + 25, pos.y - 10, nextPos.x - 25, nextPos.y - 10, 'next');
+                        // Draw prev pointer
+                        this.drawArrow(nextPos.x - 25, nextPos.y + 10, pos.x + 25, pos.y + 10, 'prev');
+                    }
+                    
+                    // Draw node
+                    this.drawNode(
+                        pos.x, 
+                        pos.y, 
+                        current.value, 
+                        current === list.head,
+                        current === list.tail
+                    );
+                    current = current.next;
+                }
+            }
+        }
+
+        // Initialize list and visualizer
+        const list = new DoublyLinkedList();
+        const visualizer = new LinkedListVisualizer('linked-list-canvas');
+
+        // Add event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const nodeValueInput = document.getElementById('node-value');
+            const insertEndBtn = document.getElementById('insert-end');
+            const insertBeginBtn = document.getElementById('insert-begin');
+            const deleteNodeBtn = document.getElementById('delete-node');
+            const resetListBtn = document.getElementById('reset-list');
+            const generateRandomBtn = document.getElementById('generate-random');
+
+            insertEndBtn.addEventListener('click', () => {
+                const value = parseInt(nodeValueInput.value);
+                if (!isNaN(value)) {
+                    list.insertAtEnd(value);
+                    visualizer.drawList(list);
+                    nodeValueInput.value = '';
+                }
+            });
+
+            insertBeginBtn.addEventListener('click', () => {
+                const value = parseInt(nodeValueInput.value);
+                if (!isNaN(value)) {
+                    list.insertAtBeginning(value);
+                    visualizer.drawList(list);
+                    nodeValueInput.value = '';
+                }
+            });
+
+            deleteNodeBtn.addEventListener('click', () => {
+                const value = parseInt(nodeValueInput.value);
+                if (!isNaN(value)) {
+                    list.deleteNode(value);
+                    visualizer.drawList(list);
+                    nodeValueInput.value = '';
+                }
+            });
+
+            resetListBtn.addEventListener('click', () => {
+                list.clear();
+                visualizer.drawList(list);
+            });
+
+            generateRandomBtn.addEventListener('click', () => {
+                // Clear existing list
+                list.clear();
+                
+                // Generate random number of nodes (between 3 and 7)
+                const numNodes = Math.floor(Math.random() * 5) + 3;
+                
+                // Generate random values and insert them
+                for (let i = 0; i < numNodes; i++) {
+                    const randomValue = Math.floor(Math.random() * 100);
+                    list.insertAtEnd(randomValue);
+                }
+                
+                visualizer.drawList(list);
+            });
+
+            // Add keyboard support
+            nodeValueInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    insertEndBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

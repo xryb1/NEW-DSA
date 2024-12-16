@@ -1093,39 +1093,3 @@ select {
     width: 100%;
     box-sizing: border-box;
 }
-
-.linked-list-button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.linked-list-button:hover {
-    background-color: #2980b9;
-}
-
-[data-theme="dark"] .linked-list-button {
-    background-color: var(--secondary-color);
-    color: white;
-}
-
-[data-theme="dark"] .linked-list-button:hover {
-    background-color: var(--hover-color);
-}
-
-.button-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 10px;
-}
-
-.button-group .linked-list-button {
-    flex: 1;
-    min-width: 200px;
-}

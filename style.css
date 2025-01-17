@@ -905,3 +905,191 @@ section h2 {
     background-color: #ffffff; /* Set the background to white */
     border: 1px solid var(--border-color); /* Optional: Add a border for better visibility */
 }
+
+/* Update existing media query and add new responsive styles */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    main {
+        padding: 10px;
+    }
+
+    section {
+        padding: 15px;
+    }
+
+    /* Header and Navigation */
+    header {
+        padding: 15px 10px;
+    }
+
+    header h1 {
+        font-size: 1.8em;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    nav a {
+        font-size: 1.1em;
+        padding: 5px 0;
+    }
+
+    /* Dark mode button */
+    .dark-mode-button {
+        top: 10px;
+        left: 10px;
+        width: 35px;
+        height: 35px;
+    }
+
+    /* Algorithm Cards */
+    .algorithm-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .algorithm-card {
+        padding: 15px;
+    }
+
+    /* Code Sections */
+    .code-section {
+        max-height: 300px;
+        font-size: 0.9em;
+    }
+
+    .pseudocode pre, 
+    .python-code pre {
+        padding: 10px;
+        font-size: 0.85em;
+    }
+
+    /* Visualizers */
+    #array-canvas,
+    #linked-list-canvas,
+    #stack-queue-canvas {
+        width: 100%;
+        height: auto;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .controls button,
+    .controls select {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .speed-control {
+        width: 100%;
+    }
+
+    #speed-slider {
+        width: 100%;
+    }
+
+    /* Visualizer Controls */
+    .visualizer-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .visualizer-controls select,
+    .visualizer-controls input,
+    .visualizer-controls button {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    /* Data Structures Grid */
+    .data-structures-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Add styles for smaller phones */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5em;
+    }
+
+    .algorithm-card h4 {
+        font-size: 1.1em;
+    }
+
+    .complexity-details {
+        font-size: 0.9em;
+    }
+
+    .code-section {
+        font-size: 0.8em;
+    }
+}
+
+/* Add styles for landscape orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+    header {
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+
+    nav ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .code-section {
+        max-height: 200px;
+    }
+}
+
+/* Ensure canvas responsiveness */
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Improve touch targets for mobile */
+button, 
+select, 
+input {
+    min-height: 44px;
+    touch-action: manipulation;
+}
+
+/* Add smooth scrolling for better mobile experience */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Prevent horizontal scrolling on mobile */
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Improve form element spacing on mobile */
+input[type="text"],
+input[type="number"],
+select {
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
